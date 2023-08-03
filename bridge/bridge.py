@@ -25,6 +25,8 @@ class Bridge(object):
             self.btype["chat"] = const.CHATGPTONAZURE
         if conf().get("use_linkai") and conf().get("linkai_api_key"):
             self.btype["chat"] = const.LINKAI
+        if conf().get("use_fastgpt") and conf().get("fastgpt_api_key"):
+            self.btype["chat"] = const.FAST_GPT
         self.bots = {}
 
     def get_bot(self, typename):

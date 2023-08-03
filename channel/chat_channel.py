@@ -228,7 +228,8 @@ class ChatChannel(Channel):
                         reply_text = conf().get("single_chat_reply_prefix", "") + reply_text + conf().get("single_chat_reply_suffix", "")
                     reply.content = reply_text
                 elif reply.type == ReplyType.ERROR or reply.type == ReplyType.INFO:
-                    reply.content = "[" + str(reply.type) + "]\n" + reply.content
+                    logger.info("ReplayType={}".format(reply))
+                    #reply.content = "[" + str(reply.type) + "]\n" + reply.content
                 elif reply.type == ReplyType.IMAGE_URL or reply.type == ReplyType.VOICE or reply.type == ReplyType.IMAGE:
                     pass
                 else:

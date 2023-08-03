@@ -86,6 +86,7 @@ class ChatGPTBot(Bot, OpenAIImage):
             )
             if reply_content["completion_tokens"] == 0 and len(reply_content["content"]) > 0:
                 reply = Reply(ReplyType.ERROR, reply_content["content"])
+                logger.debug("[CHATGPT] reply {} ".format(reply_content))
             elif reply_content["completion_tokens"] > 0:
                 self.sessions.session_reply(reply_content["content"], session_id, reply_content["total_tokens"])
                 reply = Reply(ReplyType.TEXT, reply_content["content"])
@@ -121,8 +122,9 @@ class ChatGPTBot(Bot, OpenAIImage):
             if args is None:
                 args = self.args
             response = openai.ChatCompletion.create(api_key=api_key, messages=session.messages, **args)
-            # logger.debug("[CHATGPT] response={}".format(response))
-            # logger.info("[ChatGPT] reply={}, total_tokens={}".format(response.choices[0]['message']['content'], response["usage"]["total_tokens"]))
+            response["usage"]["completion_tokens"] = response["usage"]["total_tokens"] / 2
+            logger.debug("[CHATGPT] response={}".format(response))
+            logger.info("[ChatGPT] reply={}, total_tokens={}".format(response.choices[0]['message']['content'], response["usage"]["total_tokens"]))
             return {
                 "total_tokens": response["usage"]["total_tokens"],
                 "completion_tokens": response["usage"]["completion_tokens"],
